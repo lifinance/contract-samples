@@ -1,0 +1,29 @@
+name: Forge test
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install deps
+        run: forge install
+
+      - name: Run forge tests
+        env:
+          ETH_NODE_URI_MAINNET: ${{ secrets.ALCHEMY_URL_DEV_MAINNET }}
+        run: forge test
+
+      - name: Get forge test coverage
+        env:
+          ETH_NODE_URI_MAINNET: ${{ secrets.ALCHEMY_URL_DEV_MAINNET }}
+        run: forge coverage
