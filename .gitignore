@@ -1,0 +1,19 @@
+cache/
+artifacts/
+out/
+lib/
+broadcast/
+
+lcov.info
+
+.env
+
+# IDE settings
+.vscode/*
+!.vscode/settings.json.default
+!.vscode/launch.json.default
+!.vscode/extensions.json.default
+.idea
+
+.DS_Store*
+
