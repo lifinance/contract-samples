@@ -5,6 +5,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ETH_NODE_URI_MAINNET: ${{ secrets.ETH_NODE_URI_MAINNET }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -19,11 +21,7 @@ jobs:
         run: forge install
 
       - name: Run forge tests
-        env:
-          ETH_NODE_URI_MAINNET: ${{ secrets.ALCHEMY_URL_DEV_MAINNET }}
         run: forge test
 
       - name: Get forge test coverage
-        env:
-          ETH_NODE_URI_MAINNET: ${{ secrets.ALCHEMY_URL_DEV_MAINNET }}
         run: forge coverage
