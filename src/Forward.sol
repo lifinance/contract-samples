@@ -42,7 +42,67 @@ contract Forward is IForward {
         bytes calldata data
     ) external pure override returns (AmarokData memory amarokData) {
         BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
-        if (bridgeData.hasSourceSwaps) {
+        amarokData = _extractAmarokData(data, bridgeData.hasSourceSwaps);
+    }
+
+    /// @inheritdoc IForward
+    function extractArbitrumData(
+        bytes calldata data
+    ) external pure override returns (ArbitrumData memory arbitrumData) {
+        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        arbitrumData = _extractArbitrumData(data, bridgeData.hasSourceSwaps);
+    }
+
+    /// @inheritdoc IForward
+    function extractStargateData(
+        bytes calldata data
+    ) external pure override returns (StargateData memory stargateData) {
+        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        stargateData = _extractStargateData(data, bridgeData.hasSourceSwaps);
+    }
+
+    /// @inheritdoc IForward
+    function extractNativeFeeAmount(
+        bytes calldata data
+    ) external pure override returns (uint256 amount) {
+        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        bytes32 bridgeName = keccak256(abi.encodePacked(bridgeData.bridge));
+
+        if (bridgeName == keccak256(abi.encodePacked("amarok"))) {
+            AmarokData memory amarokData = _extractAmarokData(
+                data,
+                bridgeData.hasSourceSwaps
+            );
+            amount = amarokData.relayerFee;
+        } else if (bridgeName == keccak256(abi.encodePacked("arbitrum"))) {
+            ArbitrumData memory arbitrumData = _extractArbitrumData(
+                data,
+                bridgeData.hasSourceSwaps
+            );
+            amount =
+                arbitrumData.maxSubmissionCost +
+                arbitrumData.maxGas *
+                arbitrumData.maxGasPrice;
+        } else if (bridgeName == keccak256(abi.encodePacked("stargate"))) {
+            StargateData memory stargateData = _extractStargateData(
+                data,
+                bridgeData.hasSourceSwaps
+            );
+            amount = stargateData.lzFee;
+        }
+    }
+
+    /// Internal Methods ///
+
+    /// @notice Extracts Amarok specific data from the calldata.
+    /// @param data The calldata to extract the amarok data from.
+    /// @param hasSourceSwaps Whether the data has source swaps or not.
+    /// @return amarokData Data specific to Amarok.
+    function _extractAmarokData(
+        bytes calldata data,
+        bool hasSourceSwaps
+    ) internal pure returns (AmarokData memory amarokData) {
+        if (hasSourceSwaps) {
             (, , amarokData) = abi.decode(
                 data[4:],
                 (BridgeData, SwapData[], AmarokData)
@@ -52,12 +112,15 @@ contract Forward is IForward {
         }
     }
 
-    /// @inheritdoc IForward
-    function extractArbitrumData(
-        bytes calldata data
-    ) external pure override returns (ArbitrumData memory arbitrumData) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
-        if (bridgeData.hasSourceSwaps) {
+    /// @notice Extracts Arbitrum specific data from the calldata.
+    /// @param data The calldata to extract the arbitrum data from.
+    /// @param hasSourceSwaps Whether the data has source swaps or not.
+    /// @return arbitrumData Data specific to Arbitrum.
+    function _extractArbitrumData(
+        bytes calldata data,
+        bool hasSourceSwaps
+    ) internal pure returns (ArbitrumData memory arbitrumData) {
+        if (hasSourceSwaps) {
             (, , arbitrumData) = abi.decode(
                 data[4:],
                 (BridgeData, SwapData[], ArbitrumData)
@@ -67,12 +130,15 @@ contract Forward is IForward {
         }
     }
 
-    /// @inheritdoc IForward
-    function extractStargateData(
-        bytes calldata data
-    ) external pure override returns (StargateData memory stargateData) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
-        if (bridgeData.hasSourceSwaps) {
+    /// @notice Extracts Stargate Bridge specific data from the calldata.
+    /// @param data The calldata to extract the stargate data from.
+    /// @param hasSourceSwaps Whether the data has source swaps or not.
+    /// @return stargateData Data specific to Stargate Bridge.
+    function _extractStargateData(
+        bytes calldata data,
+        bool hasSourceSwaps
+    ) internal pure returns (StargateData memory stargateData) {
+        if (hasSourceSwaps) {
             (, , stargateData) = abi.decode(
                 data[4:],
                 (BridgeData, SwapData[], StargateData)

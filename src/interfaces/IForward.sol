@@ -54,4 +54,11 @@ interface IForward is IForwardErrors, IForwardEvents, IForwardTypes {
     function extractStargateData(
         bytes calldata data
     ) external pure returns (StargateData memory stargateData);
+
+    /// @notice Extracts required native fee amount from the calldata.
+    /// @param data The calldata to extract the native fee amount.
+    /// @return amount The amount of required native fee.
+    function extractNativeFeeAmount(
+        bytes calldata data
+    ) external returns (uint256 amount);
 }

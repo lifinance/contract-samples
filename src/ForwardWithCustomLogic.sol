@@ -63,6 +63,8 @@ contract ForwardWithCustomLogic is Forward {
         );
     }
 
+    /// Internal Methods ///
+
     /// @notice Do custom logic before forward to li.fi.
     /// @dev Here, it redeem shares from beefy vault.
     ///      And then it withdraws underlying token(sending asset) from stargate pool.
