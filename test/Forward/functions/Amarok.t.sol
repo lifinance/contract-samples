@@ -61,4 +61,15 @@ contract AmarokTest is TestBaseForward {
         assertEq(amarokData.delegate, RECEIVER);
         assertEq(amarokData.destChainDomainId, 1886350457);
     }
+
+    function test_extractNativeFeeAmount_success() public {
+        AmarokData memory amarokData = forwardContract.extractAmarokData(
+            DATA_WITH_NON_NATIVE_ASSET
+        );
+
+        assertEq(
+            amarokData.relayerFee,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NON_NATIVE_ASSET)
+        );
+    }
 }

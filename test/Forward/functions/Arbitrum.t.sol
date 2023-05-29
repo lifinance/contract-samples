@@ -79,6 +79,34 @@ contract ArbitrumTest is TestBaseForward {
         assertFalse(bridgeData.hasDestinationCall);
     }
 
+    function test_extractNativeFeeAmount_success_withNonNativeAsset() public {
+        ArbitrumData memory arbitrumData = forwardContract.extractArbitrumData(
+            DATA_WITH_NON_NATIVE_ASSET
+        );
+        uint256 cost = arbitrumData.maxSubmissionCost +
+            arbitrumData.maxGas *
+            arbitrumData.maxGasPrice;
+
+        assertEq(
+            cost,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NON_NATIVE_ASSET)
+        );
+    }
+
+    function test_extractNativeFeeAmount_success_withNativeAsset() public {
+        ArbitrumData memory arbitrumData = forwardContract.extractArbitrumData(
+            DATA_WITH_NATIVE_ASSET
+        );
+        uint256 cost = arbitrumData.maxSubmissionCost +
+            arbitrumData.maxGas *
+            arbitrumData.maxGasPrice;
+
+        assertEq(
+            cost,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NATIVE_ASSET)
+        );
+    }
+
     function _fork() internal override {
         vm.createSelectFork(vm.envString("ETH_NODE_URI_MAINNET"), 17322300);
     }

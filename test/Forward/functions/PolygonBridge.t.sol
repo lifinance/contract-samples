@@ -63,4 +63,18 @@ contract PolygonBridgeTest is TestBaseForward {
         assertTrue(bridgeData.hasSourceSwaps);
         assertFalse(bridgeData.hasDestinationCall);
     }
+
+    function test_extractNativeFeeAmount_success_withNonNativeAsset() public {
+        assertEq(
+            0,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NON_NATIVE_ASSET)
+        );
+    }
+
+    function test_extractNativeFeeAmount_success_withNativeAsset() public {
+        assertEq(
+            0,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NATIVE_ASSET)
+        );
+    }
 }

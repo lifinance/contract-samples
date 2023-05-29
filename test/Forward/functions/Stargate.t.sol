@@ -66,4 +66,15 @@ contract StargateTest is TestBaseForward {
         );
         assertEq(stargateData.callData, "");
     }
+
+    function test_extractNativeFeeAmount_success_withNonNativeAsset() public {
+        StargateData memory stargateData = forwardContract.extractStargateData(
+            DATA_WITH_NON_NATIVE_ASSET
+        );
+
+        assertEq(
+            stargateData.lzFee,
+            forwardContract.extractNativeFeeAmount(DATA_WITH_NON_NATIVE_ASSET)
+        );
+    }
 }
