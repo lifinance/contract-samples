@@ -158,7 +158,5 @@ contract ForwardWithCustomLogic is Forward {
         if (!success) {
             revert FailedToForward(err);
         }
-
-        emit Forwarded(lifi, token, amount, data);
     }
 }
