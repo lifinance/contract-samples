@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+import {CalldataVerificationFacet} from "@lifi/Facets/CalldataVerificationFacet.sol";
+import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
+import {LibSwap} from "@lifi/Libraries/LibSwap.sol";
 import "./utils/interfaces/IERC20.sol";
 import "./utils/SafeERC20.sol";
 import "./interfaces/IForward.sol";
@@ -8,7 +11,7 @@ import "./interfaces/IForward.sol";
 /// @title Forward Contract
 /// @author LI.FI (https://li.fi)
 /// @notice Provides functionality for forwarding calldata to li.fi.
-contract Forward is IForward {
+contract Forward is IForward, CalldataVerificationFacet {
     using SafeERC20 for IERC20;
 
     /// External Methods ///
@@ -24,24 +27,13 @@ contract Forward is IForward {
     }
 
     /// @inheritdoc IForward
-    function extractBridgeData(
-        bytes calldata data
-    ) external pure override returns (BridgeData memory bridgeData) {
-        bridgeData = abi.decode(data[4:], (BridgeData));
-    }
-
-    /// @inheritdoc IForward
-    function extractSwapData(
-        bytes calldata data
-    ) external pure override returns (SwapData[] memory swapData) {
-        (, swapData) = abi.decode(data[4:], (BridgeData, SwapData[]));
-    }
-
-    /// @inheritdoc IForward
     function extractAmarokData(
         bytes calldata data
     ) external pure override returns (AmarokData memory amarokData) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        ILiFi.BridgeData memory bridgeData = abi.decode(
+            data[4:],
+            (ILiFi.BridgeData)
+        );
         amarokData = _extractAmarokData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -49,7 +41,10 @@ contract Forward is IForward {
     function extractArbitrumData(
         bytes calldata data
     ) external pure override returns (ArbitrumData memory arbitrumData) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        ILiFi.BridgeData memory bridgeData = abi.decode(
+            data[4:],
+            (ILiFi.BridgeData)
+        );
         arbitrumData = _extractArbitrumData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -57,7 +52,10 @@ contract Forward is IForward {
     function extractStargateData(
         bytes calldata data
     ) external pure override returns (StargateData memory stargateData) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        ILiFi.BridgeData memory bridgeData = abi.decode(
+            data[4:],
+            (ILiFi.BridgeData)
+        );
         stargateData = _extractStargateData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -65,7 +63,10 @@ contract Forward is IForward {
     function extractNativeFeeAmount(
         bytes calldata data
     ) external pure override returns (uint256 amount) {
-        BridgeData memory bridgeData = abi.decode(data[4:], (BridgeData));
+        ILiFi.BridgeData memory bridgeData = abi.decode(
+            data[4:],
+            (ILiFi.BridgeData)
+        );
         bytes32 bridgeName = keccak256(abi.encodePacked(bridgeData.bridge));
 
         if (bridgeName == keccak256(abi.encodePacked("amarok"))) {
@@ -105,10 +106,13 @@ contract Forward is IForward {
         if (hasSourceSwaps) {
             (, , amarokData) = abi.decode(
                 data[4:],
-                (BridgeData, SwapData[], AmarokData)
+                (ILiFi.BridgeData, LibSwap.SwapData[], AmarokData)
             );
         } else {
-            (, amarokData) = abi.decode(data[4:], (BridgeData, AmarokData));
+            (, amarokData) = abi.decode(
+                data[4:],
+                (ILiFi.BridgeData, AmarokData)
+            );
         }
     }
 
@@ -123,10 +127,13 @@ contract Forward is IForward {
         if (hasSourceSwaps) {
             (, , arbitrumData) = abi.decode(
                 data[4:],
-                (BridgeData, SwapData[], ArbitrumData)
+                (ILiFi.BridgeData, LibSwap.SwapData[], ArbitrumData)
             );
         } else {
-            (, arbitrumData) = abi.decode(data[4:], (BridgeData, ArbitrumData));
+            (, arbitrumData) = abi.decode(
+                data[4:],
+                (ILiFi.BridgeData, ArbitrumData)
+            );
         }
     }
 
@@ -141,10 +148,13 @@ contract Forward is IForward {
         if (hasSourceSwaps) {
             (, , stargateData) = abi.decode(
                 data[4:],
-                (BridgeData, SwapData[], StargateData)
+                (ILiFi.BridgeData, LibSwap.SwapData[], StargateData)
             );
         } else {
-            (, stargateData) = abi.decode(data[4:], (BridgeData, StargateData));
+            (, stargateData) = abi.decode(
+                data[4:],
+                (ILiFi.BridgeData, StargateData)
+            );
         }
     }
 

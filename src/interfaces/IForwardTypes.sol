@@ -3,29 +3,6 @@ pragma solidity 0.8.17;
 
 /// @title Types for Forward Contract
 interface IForwardTypes {
-    struct BridgeData {
-        bytes32 transactionId;
-        string bridge;
-        string integrator;
-        address referrer;
-        address sendingToken;
-        address receiver;
-        uint256 minAmount;
-        uint256 destinationChainId;
-        bool hasSourceSwaps;
-        bool hasDestinationCall;
-    }
-
-    struct SwapData {
-        address callTo;
-        address approveTo;
-        address sendingAssetId;
-        address receivingAssetId;
-        uint256 fromAmount;
-        bytes callData;
-        bool requiresDeposit;
-    }
-
     /// @param callData The data to execute on the receiving chain. If no crosschain call is needed, then leave empty.
     /// @param callTo The address of the contract on dest chain that will receive bridged funds and execute data
     /// @param relayerFee The amount of relayer fee the tx called xcall with

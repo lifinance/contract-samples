@@ -39,13 +39,13 @@ contract AmarokTest is TestBaseForward {
     }
 
     function test_extractBridgeData_success_withNonNativeAsset() public {
-        BridgeData memory bridgeData = forwardContract.extractBridgeData(
+        ILiFi.BridgeData memory bridgeData = forwardContract.extractBridgeData(
             DATA_WITH_NON_NATIVE_ASSET
         );
 
         assertEq(bridgeData.bridge, "amarok");
         assertEq(bridgeData.integrator, "lifi-api");
-        assertEq(bridgeData.sendingToken, USDC);
+        assertEq(bridgeData.sendingAssetId, USDC);
         assertEq(bridgeData.receiver, RECEIVER);
         assertEq(bridgeData.destinationChainId, 137);
         assertTrue(bridgeData.hasSourceSwaps);

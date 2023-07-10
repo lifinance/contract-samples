@@ -52,13 +52,13 @@ contract ArbitrumTest is TestBaseForward {
     }
 
     function test_extractBridgeData_success_withNonNativeAsset() public {
-        BridgeData memory bridgeData = forwardContract.extractBridgeData(
+        ILiFi.BridgeData memory bridgeData = forwardContract.extractBridgeData(
             DATA_WITH_NON_NATIVE_ASSET
         );
 
         assertEq(bridgeData.bridge, "arbitrum");
         assertEq(bridgeData.integrator, "lifi-api");
-        assertEq(bridgeData.sendingToken, DAI);
+        assertEq(bridgeData.sendingAssetId, DAI);
         assertEq(bridgeData.receiver, RECEIVER);
         assertEq(bridgeData.destinationChainId, 42161);
         assertTrue(bridgeData.hasSourceSwaps);
@@ -66,13 +66,13 @@ contract ArbitrumTest is TestBaseForward {
     }
 
     function test_extractBridgeData_success_withNativeAsset() public {
-        BridgeData memory bridgeData = forwardContract.extractBridgeData(
+        ILiFi.BridgeData memory bridgeData = forwardContract.extractBridgeData(
             DATA_WITH_NATIVE_ASSET
         );
 
         assertEq(bridgeData.bridge, "arbitrum");
         assertEq(bridgeData.integrator, "lifi-api");
-        assertEq(bridgeData.sendingToken, DAI);
+        assertEq(bridgeData.sendingAssetId, DAI);
         assertEq(bridgeData.receiver, RECEIVER);
         assertEq(bridgeData.destinationChainId, 42161);
         assertTrue(bridgeData.hasSourceSwaps);

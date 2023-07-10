@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
+import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
 import {Test} from "forge-std/Test.sol";
 import "src/interfaces/IForwardErrors.sol";
 import "src/interfaces/IForwardEvents.sol";

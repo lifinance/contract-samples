@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
+import {LibSwap} from "@lifi/Libraries/LibSwap.sol";
 import "../utils/interfaces/IERC20.sol";
 import "./IForwardErrors.sol";
 import "./IForwardEvents.sol";
@@ -19,20 +21,6 @@ interface IForward is IForwardErrors, IForwardEvents, IForwardTypes {
         uint256 amount,
         bytes calldata data
     ) external payable;
-
-    /// @notice Extracts the bridge data from the calldata.
-    /// @param data The calldata to extract the bridge data from.
-    /// @return bridgeData The bridge data extracted from the calldata.
-    function extractBridgeData(
-        bytes calldata data
-    ) external pure returns (BridgeData memory bridgeData);
-
-    /// @notice Extracts the swap data from the calldata.
-    /// @param data The calldata to extract the swap data from.
-    /// @return swapData The swap data extracted from the calldata.
-    function extractSwapData(
-        bytes calldata data
-    ) external pure returns (SwapData[] memory swapData);
 
     /// @notice Extracts Amarok specific data from the calldata.
     /// @param data The calldata to extract the amarok data from.
