@@ -12,7 +12,8 @@ import "forge-std/console.sol";
 
 /// @title Forward Contract with custom logic.
 /// @author LI.FI (https://li.fi)
-/// @notice Provides functionality for forwarding calldata to li.fi.
+/// @notice Provides functionality for custom logic process
+///         and forwarding calldata to li.fi.
 contract ForwardWithCustomLogic is Forward {
     using SafeERC20 for IERC20;
 
