@@ -1,7 +1,6 @@
 ds-test/=lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 @lifi/=lib/contracts/src/
-@openzeppelin/=lib/openzeppelin-contracts/
 
 src/=src/
 test/=test/
