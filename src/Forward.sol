@@ -30,10 +30,7 @@ contract Forward is IForward, CalldataVerificationFacet {
     function extractAmarokData(
         bytes calldata data
     ) external pure override returns (AmarokData memory amarokData) {
-        ILiFi.BridgeData memory bridgeData = abi.decode(
-            data[4:],
-            (ILiFi.BridgeData)
-        );
+        ILiFi.BridgeData memory bridgeData = _extractBridgeData(data);
         amarokData = _extractAmarokData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -41,10 +38,7 @@ contract Forward is IForward, CalldataVerificationFacet {
     function extractArbitrumData(
         bytes calldata data
     ) external pure override returns (ArbitrumData memory arbitrumData) {
-        ILiFi.BridgeData memory bridgeData = abi.decode(
-            data[4:],
-            (ILiFi.BridgeData)
-        );
+        ILiFi.BridgeData memory bridgeData = _extractBridgeData(data);
         arbitrumData = _extractArbitrumData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -52,10 +46,7 @@ contract Forward is IForward, CalldataVerificationFacet {
     function extractStargateData(
         bytes calldata data
     ) external pure override returns (StargateData memory stargateData) {
-        ILiFi.BridgeData memory bridgeData = abi.decode(
-            data[4:],
-            (ILiFi.BridgeData)
-        );
+        ILiFi.BridgeData memory bridgeData = _extractBridgeData(data);
         stargateData = _extractStargateData(data, bridgeData.hasSourceSwaps);
     }
 
@@ -63,10 +54,7 @@ contract Forward is IForward, CalldataVerificationFacet {
     function extractNativeFeeAmount(
         bytes calldata data
     ) external pure override returns (uint256 amount) {
-        ILiFi.BridgeData memory bridgeData = abi.decode(
-            data[4:],
-            (ILiFi.BridgeData)
-        );
+        ILiFi.BridgeData memory bridgeData = _extractBridgeData(data);
         bytes32 bridgeName = keccak256(abi.encodePacked(bridgeData.bridge));
 
         if (bridgeName == keccak256(abi.encodePacked("amarok"))) {
