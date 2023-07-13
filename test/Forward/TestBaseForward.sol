@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
-import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
 import {Test} from "forge-std/Test.sol";
+import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "src/interfaces/IForwardErrors.sol";
 import "src/interfaces/IForwardEvents.sol";
 import "src/interfaces/IForwardTypes.sol";
-import "src/utils/interfaces/IERC20.sol";
-import "src/utils/SafeERC20.sol";
 import "src/Forward.sol";
 import "forge-std/console.sol";
 

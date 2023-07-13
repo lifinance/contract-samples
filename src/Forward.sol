@@ -4,8 +4,8 @@ pragma solidity 0.8.17;
 import {CalldataVerificationFacet} from "@lifi/Facets/CalldataVerificationFacet.sol";
 import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
 import {LibSwap} from "@lifi/Libraries/LibSwap.sol";
-import "./utils/interfaces/IERC20.sol";
-import "./utils/SafeERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IForward.sol";
 
 /// @title Forward Contract

@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 
 import {ILiFi} from "@lifi/Interfaces/ILiFi.sol";
 import {LibSwap} from "@lifi/Libraries/LibSwap.sol";
-import "../utils/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "./IForwardErrors.sol";
 import "./IForwardEvents.sol";
 import "./IForwardTypes.sol";
